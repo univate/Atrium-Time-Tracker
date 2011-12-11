@@ -16,7 +16,7 @@ function atrium_time_tracker_menu_alter (&$items) {
       'description' => 'My Time Sheet',
       'page callback' => 'time_sheet_page',
       'page arguments' => array(1),
-      'access callback' => 'time_sheet_view_access',
+      'access callback' => 'atrium_time_tracker_access',
       'access arguments' => array(1),
       'type' => MENU_NORMAL_ITEM,
       'menu_name' => 'features',
@@ -27,6 +27,10 @@ function atrium_time_tracker_menu_alter (&$items) {
       ),
     );
   }
+}
+
+function atrium_time_tracker_access($account) {
+  return spaces_access_feature('view', 'atrium_time_tracker') && time_sheet_view_access($account);
 }
 
 /**
@@ -269,7 +273,7 @@ function atrium_time_sheet_user_page($user = NULL) {
 
 function atrium_time_tracker_atrium_account_links_alter(&$links) {
   global $user;
-  $item = menu_get_item("time_sheet/{$user->uid}");
+  $item = menu_get_item("user/{$user->uid}/time_sheet");
   if ($item && $item['access']) {
     $links[] = array(
       'title' => 'Time Sheet',
