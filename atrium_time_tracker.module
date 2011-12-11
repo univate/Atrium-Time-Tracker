@@ -267,4 +267,13 @@ function atrium_time_sheet_user_page($user = NULL) {
   return $output;
 }
 
-
+function atrium_time_tracker_atrium_account_links_alter(&$links) {
+  global $user;
+  $item = menu_get_item("time_sheet/{$user->uid}");
+  if ($item && $item['access']) {
+    $links[] = array(
+      'title' => 'Time Sheet',
+      'href' => $item['href'],
+    );
+  }
+}
